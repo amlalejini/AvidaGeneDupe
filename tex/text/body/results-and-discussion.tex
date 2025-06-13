@@ -1,0 +1,149 @@
+\section{Results and Discussion} \label{sec:results}
+
+\subsection{Gene duplication facilitates adaptive evolution of complex traits}
+
+In a first set of experiments, we investigated the impact of slip duplications on \textit{de novo} evolution of adaptive phenotypic traits.
+Comparing the acquisition of Logic-9 traits between slip-duplicate-enabled and baseline treatments, we found slip duplications to yield significantly higher evolved phenotypic adaptation scores (two-tailed Mann-Whitney U test, $W = 562.5$, Bonferroni-adjusted $p << 0.0001$; Figure \ref{fig:results_panels}).
+Investigating further, we noticed that most replicates saw substantial growth in genome length --- in some cases, a ten-fold increase up to sizes slightly more than 1,000 sites.
+To test whether adaptive benefit was attributable to genome length, we performed additional experiments incorporating a ``long-genome'' control treatment initialized using genomes extended to 1,000 sites with neutral inserts.
+
+\input{fig/adaptive-evolution-rate.tex}
+
+Comparing the long-genome and baseline treatments, we observed increased genome length alone to also significantly boost task acquisition.
+Disaggregating by task complexity, though, reveals impact of genome length as most prominent in the acquisition of simple tasks.
+Figure \ref{fig:adaptive-evolution-rate} compares acquisition rates for tasks across task complexity classes --- with and without slip duplication, including the long-genome control.
+The long-genome control matched or exceeded the performance of slip-duplication in evolving simple traits with 3 or fewer components.
+% https://github.com/chaynes2019/AvidaGeneDupe/blob/538ede79c7301f10718ca96c8dd38782b6882632/binder/adaptive-evolution-rate.ipynb
+However, slip duplication evolved more complex 4- and 5-component traits within a significantly higher fraction of replicates compared to the long-genome control (Fisher's exact tests; 36/60 vs. 24/60, $p<0.05$ [4 components]; 10/30 vs. 2/30, $p<0.03$ [5 components]; Figure \ref{fig:adaptive-evolution-rate}).
+
+These results align with existing findings across a wide variety of biological taxa and digital models that slip-duplication of genetic material can facilitate evolution of adaptive traits \citep{Koza:1995fr,Zhang:2003fw,Teichmann:2004cz}.
+Indeed, a striking example of gene duplication leading to new adaptations comes from the Long-Term Evolution Experiment in \textit{Escherichia coli}, where a duplication in one population broadened expression of key metabolic machinery to previously inhibitive conditions --- resulting in a 7-fold increase in population size \citep{blount_genomic_2012}.
+Although a longstanding hypothesis dating as far back as Ohno \citep{ohno1970evolution}, however, results connecting experimental evidence connecting gene duplication, in particular, to complex traits is less well-established.
+
+% are specific to adaptive evolution
+\subsection{Information content of duplications provides adaptive benefit}
+
+\input{fig/results_panels_new.tex}
+
+Having observed that slip-duplicate mutations accelerate evolution of Logic-9 phenotypes, we next sought to isolate the aspects of slip duplication contributing to adaptation.
+For this purpose, we tested four variants of the slip-duplication operator, disabling or replacing a particular aspect of slip duplication (overviewed in Figure \ref{fig:slip_mut_variants}).
+
+As shown in Figure \ref{fig:results_panels}, we detected benefits to adaptive evolution only for the follow-up slip-scramble treatment --- which randomized sequence order within duplicated regions (two-tailed Mann-Whitney U test; Figure \ref{fig:results_panels}).
+Phenotypic adaptation scores under all other slip-duplicate variants were indistinguishable or slower-adapting compared with the baseline treatment.
+
+Given the efficacy of the slip-scramble treatment in facilitating adaptation, we additionally tested whether phenotypic adaptation differed between the slip-scramble and full-fledged slip-duplicate operators.
+To prevent issues with multiple comparisons, we dispatched 100 new trials under both treatments for this test.
+% p = 0.011
+We found that the slip-duplicate treatment did, in fact, yield higher task counts compared to the slip-scramble treatment (two-tailed Mann-Whitney U test, $W = 4305$ respectively, Bonferroni-adjusted $p < 0.02$).
+These results indicate that both the content and structure of duplicated genetic material contribute to facilitating adaptive evolution.
+
+Interestingly, unlike our long-genome control, we did not observe an adaptive benefit from the nop-insert slip-duplication treatment.
+One possible explanation for this difference is the long-genome control's inability to rapidly shrink genome size through slip deletions.
+Indeed, in preliminary experiments we found that deleterious mutational load associated with larger genome size frequently drove genome shrinkage, necessitating enforcement of a lower bound on genome size.
+This pattern aligns with established theory that contingent factors play an important role in ensuring preservation of new genome content \citep{Innan2010,Wagner1998,Tautz1992}.
+
+% As above, earlier-reported experiments within our study system concur with present work, finding sequence content and order to both also benefit adaptive evolution within changing environments \citep{lalejini2017gene}.
+
+% \subsection{How Does Slip Duplication Facilitate Adaptive Evolution?}
+
+% Thus far, we have established that slip-duplications of genetic material can significantly benefit adaptive evolution, and that sequence content and order both contribute to this effect.
+% We next sought to explain \textit{how} the structural characteristics of slip duplications promote adaptive evolution in our study system.
+
+% In these investigations, we evaluated three hypotheses around evolutionary dynamics of slip duplications.
+% First, we explored how the facilitation of adaptive evolution by gene duplication differed between simple and complex traits promoted by gene duplication.
+% Second, we tested for signatures of evolutionary potentiation by gene duplications along lineage histories.
+% Finally, we examined how slip duplication influences genetic architecture with respect to brittleness and vestigial genetic material.
+
+\subsection{Duplicated sites are potentiated for complex traits}
+
+% https://github.com/chaynes2019/AvidaGeneDupe/blob/4c7fa27229094adcb5bdb0b1aec541d0014b0fed/binder/hard-task-gain.ipynb
+%             H-statistic       p-value
+% Components
+% 1              1.011820  3.144672e-01
+% 2             22.787798  1.809107e-06
+% 3             33.846753  5.962854e-09
+% 4             15.359894  8.885441e-05
+% 5              9.097744  2.559249e-03
+%    Components  Prev Slip Insertion Cumulative Count      mean       std
+% 0           1                                 False  0.932088  0.455109
+% 1           1                                  True  1.002025  1.164197
+% 2           2                                 False  0.588566  0.618479
+% 3           2                                  True  1.579974  1.191681
+% 4           3                                 False  0.491481  0.700256
+% 5           3                                  True  1.516115  0.911430
+% 6           4                                 False  0.703793  0.980105
+% 7           4                                  True  1.229158  0.654042
+% 8           5                                 False  0.583674  0.927917
+% 9           5                                  True  1.249985  0.531423
+%    Components  Prev Slip Insertion Cumulative Count  size
+% 0           1                                 False    60
+% 1           1                                  True    48
+% 2           2                                 False    60
+% 3           2                                  True    56
+% 4           3                                 False    60
+% 5           3                                  True    59
+% 6           4                                 False    52
+% 7           4                                  True    52
+% 8           5                                 False    20
+% 9           5                                  True    20
+
+\input{fig/potentiation}
+
+Thus far, we have established that slip duplication can promote evolution of novel traits, with this effect biasing toward complex traits.
+% We next sought to characterize aspects of genetic architecture through which slip duplication drives adaptation.
+We next sought to understand the extent to which duplicated genetic material itself contributes to potentiating novel neofunctional traits.
+
+To address the question, we assessed the density of coding sites for novel tasks in genome regions that had previously been slip duplicated.
+Figure \ref{fig:potentiation} compares involvement in coding for new tasks between previously slip-duplicated and non-slip-duplicated sites.
+For the simplest tasks, requiring only one NAND component, we found no significant difference in the likelihood of duplicated sites participating in coding regions for new tasks.
+% https://github.com/chaynes2019/AvidaGeneDupe/blob/2d31c0bd0cc9bdbf4bb49224859d6bd165cd36c8/binder/hard-task-gain2.ipynb
+However, we found significant associations for traits with two or more NAND components (one-sample Wilcoxon signed-rank tests; $n=56,59,52,20$ observations).
+Effect sizes of potentiation on likelihood to code for novel traits were $1.6\times$, $1.6\times$, $1.2\times$, and $1.2\times$, respectively, for 2, 3, 4, and 5 task components.
+Smaller effect sizes at 4- and 5-component tasks may be due to a larger portion of the genome becoming comprised of slip-duplicated sites (Supplementary Figure \ref{fig:potentiation-supp}), thus lowering the upper ceiling on deviation from expected.
+
+One possible factor confounding our assay for potentiation is evolutionary constraint at genome sites involved in organsims' self-replication loop.
+These sites are critical to viability, with lethal outcomes when knocked out.
+We found that these critical sites were less likely to be involved in slip duplication and also less likely to be involved in coding for \textit{de novo} traits.
+% Hence, a spurious correlation could be introduced.
+However, after excluding such fitness-critical sites from analysis, we still found generally similar potentiation signatures from slip duplication (Supplemental Figure \ref{fig:potentiation-supp}).
+
+In addition to neofunctionalization, gene duplications are also hypothesized to directly facilitate adaptation by directly producing beneficial mutational changes, for example, through dose effects \citep{kondrashov2012gene}.
+% https://github.com/chaynes2019/AvidaGeneDupe/blob/61ea29d989ebc8ad83dcfee94f3fa556b81e3f78/binder/gain-mechanism.ipynb
+In line with this possibility, we observed that a substantial fraction of gain-of-function steps on lineages directly coincided with slip duplications --- 41 of 174, or 23.6\%.
+However, in these cases, we still found evidence that sites coding for a new trait directly were more likely than chance to have been involved in earlier slip duplications (Supplemental Figure \ref{fig:potentiation-supp}).
+Thus, the adaptive characteristics of slip duplication observed in our system seem likely to result from a combination of potentiation and direct facilitation.
+
+\subsection{Genome length drives genetic complexity}
+
+\input{fig/num-coding-sites}
+
+In a final set of analyses, we broadened our scope to assess consequences of gene duplication on whole-genome architecture with respect to genome robustness, which we defined in terms of sensitivity of fitness to mutation \citep{lenski1999genome}.
+We quantified robustness by counting the number of ``critical'' genome sites, where a single-site knockout disrupted replicator viability or one or more adaptive phenotypic traits (i.e., Logic-9 tasks).%
+\footnote{%
+Although sufficiently representative for our purposes, limitations exist in detecting Avida genome functionality through single-site knockouts; such an approach can underestimate aspects of genome sequence complexity involving small effects or redundancy \citep{lenski1999genome,moreno2024cryptic}.
+}
+
+One conventional perspective on gene duplication is \textit{vis-a-vis} neutral dynamics, wherein copied genetic material reduces brittleness by introducing redundancy \citep{wagner1996genetic}.
+To assess the relevance of this model within our study system, we performed slip-duplicate mutational assays to quantify the baseline effect of slip insertion mutations on robustness, in the absence of selection.
+
+We applied our assay to final-dominant genome lineages evolved with slip duplication.
+For this purpose, we generated one slip duplication per genome, and filtered away those that affected self-replication viability or altered the Logic-9 phenotype.
+We then measured change in critical site counts between corresponding wildtype and mutated variants.
+
+In line with evidence that duplication-associated redundancy can boost robustness \citep{Lynch2000}, Fitness-neutral slip insertions did indeed tend to reduce the number of genome sites detectable as a single point of failure for performed tasks.
+% https://github.com/chaynes2019/AvidaGeneDupe/blob/9fee1f13a8d31f25d1dd799c6a26f9b7fa617738/binder/indel-effect-nulldist.ipynb
+On average, we found that neutral slip insertions decreased coding site count by 6.8 sites (bootstrapped 95\% CI 6.4 to 7.3).
+This effect was strongest in genomes with high complexity; for instance, neutral insertion mutations decrease coding site count by 9.2 and 8.3 sites on average in genomes that encode 4- and 5-component complexity tasks, respectively (bootstrapped 95\% CIs 8.5 to 9.9 and 7.2 to 9.3).
+Supplementary Figure \ref{fig:nulldist} presents these results.
+
+% https://github.com/chaynes2019/AvidaGeneDupe/blob/binder/binder/gain-mechanism.ipynb
+To assess evolutionary consequences of redundancies introduced by slip-duplication, we next pivoted to assess coding site accumulation within genomes over the course of evolution.
+Counter to naive expectation, we found that the slip duplication treatment accrued fitness-critical sites at a generation-on-generation rate comparable to the long-genome baseline treatment; Mann-Whitney test, $U=361$, $p=0.19$).
+Despite this similarity, however, when measurements were taken inclusive of vestigial coding sites (those which had \textit{previously} been fitness-critical earlier within a lineage), we found a significantly increased coding site count associated with the slip-duplicate treatment (Mann-Whitney test, $U=630$, $p<0.01$).
+Figure \ref{fig:num-coding-sites} compares growth in active versus vestigial coding site counts for baseline, long-genome, and slip-duplication treatment.
+Within our study system, slip duplication appears to increase the net supply of coding material in the genome available to neutral processes, but not significantly affect accumulation of genetic brittleness.
+
+% Indeed, in nature, large-scale genomic analyses have discovered cases where a strikingly high fraction of the genes in an organism show evidence of having arisen from gene duplications \citep{teichmann_structural_1998,Teichmann:2004cz}.
+% Comparative studies have associated duplication events early in natural history with increases in genetic robustness and evolutionary innovation \citep{wagner_gene_2008}.
+
+% One possible explanation is that selective pressures are driving the two treatments to reach a similar number of critical sites, but slip duplication can duplicate and copy genome content in a manner that increases the copy count of previously coding sites relative to the number of critical sites.
